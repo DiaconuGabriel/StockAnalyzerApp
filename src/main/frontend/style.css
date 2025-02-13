@@ -1,0 +1,48 @@
+body {
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    margin: 0; /* Ensure no margin around the body */
+}
+
+.title{
+    padding-top: 20px;
+}
+
+.text-field-placeholder input {
+    width: 350px; /* Adjust the width as needed */
+    height: 100px; /* Adjust the height as needed */
+    font-size: 25px;
+    text-align: center
+}
+
+.text-field-placeholder {
+    width: 300px; /* Adjust the width as needed */
+    height: 100px; /* Adjust the height as needed */
+    border-radius: 40px; /* Rounded corners */
+}
+
+.button {
+    width: 200px; /* Adjust the width as needed */
+    height: 100px; /* Adjust the height as needed */
+    font-size: 21px;
+}
+
+.output-paragraph {
+    display: inline-block; /* Allow the label to resize based on content */
+    width: 70%; /* Fixed width */
+    border-radius: 20px; /* Rounded corners */
+    min-height: 300px;
+    max-height: 500px;
+    font-size: 25px;
+    background-color: #d3d3d3; /* Background color */
+    color: #000000; /* Text color */
+    padding: 10px;
+    border: 1px solid #ccc; /* Optional border */
+    overflow-y: auto; /* Scroll if content overflows vertically */
+    word-wrap: break-word; /* Break long words to fit within the label */
+    max-width: 100%; /* Ensure the label does not exceed the container width */
+}
+
