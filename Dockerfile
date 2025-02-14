@@ -2,7 +2,6 @@
 FROM gradle:7.6.0-jdk17 AS build
 WORKDIR /app
 COPY . .
-RUN chmod -R 777 /home/gradle/.gradle/caches
 RUN gradle build -x test
 
 # Stage 2: Run the application
