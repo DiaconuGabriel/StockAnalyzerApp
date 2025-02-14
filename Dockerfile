@@ -4,22 +4,25 @@ FROM gradle:7.6.0-jdk17 AS build
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy Gradle wrapper and configuration files first (for build caching)
+# Copy only Gradle wrapper and configuration files first (to cache dependencies)
 COPY gradle /app/gradle
 COPY gradlew /app/gradlew
 COPY build.gradle /app/build.gradle
 COPY settings.gradle /app/settings.gradle
 
-# Ensure the Gradle wrapper is executable
+# Grant execute permissions to gradlew
 RUN chmod +x /app/gradlew
 
-# Pre-download dependencies (this helps cache dependencies)
+# Pre-download dependencies to leverage Docker layer caching
 RUN ./gradlew dependencies --no-daemon || true
 
-# Copy the rest of the project files into the container
+# Copy the rest of the application files
 COPY . .
 
-# Build the application (clean build without needing to skip tests)
+# Grant execute permissions again in case permissions were reset during the COPY
+RUN chmod +x /app/gradlew
+
+# Build the application
 RUN ./gradlew clean build --no-daemon
 
 # Stage 2: Run the application
@@ -28,11 +31,11 @@ FROM eclipse-temurin:17-jre
 # Set the runtime working directory
 WORKDIR /app
 
-# Copy the built JAR file from the first stage to the runtime image
+# Copy the built JAR file from the build stage
 COPY --from=build /app/build/libs/*.jar app.jar
 
 # Expose the application port
 EXPOSE 8081
 
-# Define the command to run the application
+# Command to run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
