@@ -5,7 +5,7 @@ COPY . .
 RUN gradle build -x test
 
 # Stage 2: Run the application
-FROM openjdk:17-slim
+FROM eclipse-temurin:17-jre
 WORKDIR /app
 COPY --from=build /app/build/libs/*.jar app.jar
 EXPOSE 8081
