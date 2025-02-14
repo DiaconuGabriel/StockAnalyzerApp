@@ -15,7 +15,8 @@ body {
     width: 350px; /* Adjust the width as needed */
     height: 100px; /* Adjust the height as needed */
     font-size: 25px;
-    text-align: center
+    text-align: center;
+    margin: none;
 }
 
 .text-field-placeholder {
@@ -46,3 +47,18 @@ body {
     max-width: 100%; /* Ensure the label does not exceed the container width */
 }
 
+.date-pickers-layout {
+    height: 100px !important;
+}
+.custom-date-picker {
+    width: 175px;
+    height: 54px !important;
+    margin : 10px;
+}
+
+.custom-period-picker {
+    width: 175px;
+    height: 54px !important;
+    margin : 10px;
+    padding: none;
+}

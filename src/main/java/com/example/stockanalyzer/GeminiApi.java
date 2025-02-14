@@ -40,14 +40,14 @@ public class GeminiApi {
                         "    }\n" +
                         "  ],\n" +
                         "  \"generationConfig\": {\n" +
-                        "    \"temperature\": 1,\n" +
+                        "    \"temperature\": 0.65,\n" +
                         "    \"topK\": 64,\n" +
-                        "    \"topP\": 0.78,\n" +
+                        "    \"topP\": 0.95,\n" +
                         "    \"maxOutputTokens\": 100000,\n" +
                         "    \"responseMimeType\": \"text/plain\"\n" +
                         "  }\n" +
                         "}",
-                "You are a friendly bro stock advisor who analyzes stock historic data and predicts the price movement for the stock. Your respone is 150 words maximum."+ inputText);
+                "You are a friendly bro stock advisor who analyzes stock historic data and predicts the price movement for the stock by saying if it is worth to buy or sell. Your respone is 250 words maximum."+ inputText);
 
         // Send the request
         try (OutputStream os = connection.getOutputStream()) {
@@ -57,13 +57,6 @@ public class GeminiApi {
             throw new Exception(e);
 
         }
-
-        String remainingRequests = connection.getHeaderField("X-RateLimit-Remaining");
-        if(remainingRequests == null){
-            System.out.println("Remaining requests: " + remainingRequests);
-            throw new Exception("You exhausted the requests for today. Please try again tomorrow.");
-        }
-
 
         // Get the response
         int responseCode = connection.getResponseCode();

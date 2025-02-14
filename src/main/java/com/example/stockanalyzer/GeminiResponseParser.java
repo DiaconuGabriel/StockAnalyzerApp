@@ -11,8 +11,8 @@ public class GeminiResponseParser {
         JSONObject content = candidates.getJSONObject(0).getJSONObject("content");
         JSONArray parts = content.getJSONArray("parts");
         StringBuilder parsedText = new StringBuilder();
-
-        for (int i = 0; i <= parts.length(); i++) {
+        int i = 0;
+        for (i = 0; i < parts.length(); i++) {
             parsedText.append(parts.getJSONObject(i).getString("text"));
         }
 
