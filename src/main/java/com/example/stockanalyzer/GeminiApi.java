@@ -30,23 +30,24 @@ public class GeminiApi {
 
         // Build JSON payload
         String jsonInputString = String.format(
-                "{\n" +
-                        "  \"contents\": [\n" +
-                        "    {\n" +
-                        "      \"role\": \"user\",\n" +
-                        "      \"parts\": [\n" +
-                        "        { \"text\": \"%s\" }\n" +
-                        "      ]\n" +
-                        "    }\n" +
-                        "  ],\n" +
-                        "  \"generationConfig\": {\n" +
-                        "    \"temperature\": 0.65,\n" +
-                        "    \"topK\": 64,\n" +
-                        "    \"topP\": 0.95,\n" +
-                        "    \"maxOutputTokens\": 100000,\n" +
-                        "    \"responseMimeType\": \"text/plain\"\n" +
-                        "  }\n" +
-                        "}",
+                """
+                        {
+                          "contents": [
+                            {
+                              "role": "user",
+                              "parts": [
+                                { "text": "%s" }
+                              ]
+                            }
+                          ],
+                          "generationConfig": {
+                            "temperature": 0.65,
+                            "topK": 64,
+                            "topP": 0.95,
+                            "maxOutputTokens": 100000,
+                            "responseMimeType": "text/plain"
+                          }
+                        }""",
                 "You are a friendly bro stock advisor who analyzes stock historic data and predicts the price movement for the stock by saying if it is worth to buy or sell. Your respone is 250 words maximum."+ inputText);
 
         // Send the request
@@ -55,7 +56,6 @@ public class GeminiApi {
             os.write(input, 0, input.length);
         } catch (Exception e) {
             throw new Exception(e);
-
         }
 
         // Get the response
@@ -69,7 +69,6 @@ public class GeminiApi {
             br = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
         } else {
             br = new BufferedReader(new InputStreamReader(connection.getErrorStream(), StandardCharsets.UTF_8));
-            System.out.println("Error: " + responseCode);
         }
 
         StringBuilder response = new StringBuilder();

@@ -12,8 +12,8 @@ import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 
-import javax.sound.midi.SysexMessage;
 import java.time.LocalDate;
+import java.util.Arrays;
 
 @Route("")
 @CssImport("./style.css")
@@ -39,6 +39,8 @@ public class MainView extends VerticalLayout {
         DatePicker datePicker_start = new DatePicker("Start date");
         DatePicker datePicker_end = new DatePicker("End date");
 
+        datePicker_start.setMin(LocalDate.now().minusDays(365*2));
+        datePicker_end.setMin(LocalDate.now().minusDays(365*2));
         datePicker_start.setMax(LocalDate.now().minusDays(1));
         datePicker_end.setMax(LocalDate.now().minusDays(1));
 
@@ -61,7 +63,7 @@ public class MainView extends VerticalLayout {
 
         Select<String> select_period = new Select<>();
         select_period.setLabel("Range");
-        select_period.setItems("day", "week", "month");
+        select_period.setItems("minute","hour","day","week", "month");
         select_period.setValue("day");
 
         select_multiplier.addClassName("custom-period-picker");
@@ -86,20 +88,31 @@ public class MainView extends VerticalLayout {
                 String multiplier = select_multiplier.getValue();
                 String period = select_period.getValue();
                 outputParagraph.setText(""); // Reset the output paragraph
-                System.out.println(datePicker_start.getValue());
+
                 if(!text.isEmpty() && !start_date.isEmpty() && !end_date.isEmpty()){
-                    String tickerValues = null;
+                    String[] tickerValues = null;
                     String geminiResponse = null;
+                    String firstDate = null;
+                    String lastDate = null;
                     try {
-                        tickerValues = StockParser.parse(tickerApi.getTickerValues(text, multiplier, period, start_date, end_date));
-                        if(tickerValues.isEmpty()){
+                        String ticker_respone = tickerApi.getTickerValues(text, multiplier, period, start_date, end_date);
+//                      System.out.println(ticker_respone);
+                        tickerValues = StockParser.parse(ticker_respone);
+//                        System.out.println(Arrays.toString(tickerValues));
+                        firstDate = tickerValues[1];
+                        lastDate = tickerValues[2];
+//                        System.out.println(Lasdate);
+                        if(tickerValues[0].isEmpty()){
                             typeText(outputParagraph, "Bro put a valid ticker.".split(" "));
                         }else {
-                            geminiResponse = geminiApi.generateContent(tickerValues);
-                            typeText(outputParagraph, GeminiResponseParser.parseResponse(geminiResponse).split(" "));
+                            geminiResponse = geminiApi.generateContent(tickerValues[0]);
+//                            System.out.println(geminiResponse);
+                            String respone_to_print = "Prediction for period between [" + firstDate + " ; " + lastDate + "]: <br>" + GeminiResponseParser.parseResponse(geminiResponse);
+                            typeText(outputParagraph, respone_to_print.split(" "));
                         }
                     } catch (Exception ex){
-                        System.out.println(ex.getMessage());
+//                        System.out.println(ex.getMessage());
+//                        System.out.println("De aici a aruncat");
                         typeText(outputParagraph, ex.getMessage().split(" "));
                     }
                 }else if(text.isEmpty()){
@@ -116,8 +129,9 @@ public class MainView extends VerticalLayout {
 
     private void typeText(Paragraph paragraph, String[] words) {
         int delay = 25; // Fixed delay between each word (in milliseconds)
+
         for (int i = 0; i < words.length; i++) {
-            String word = words[i] + " ";
+            String word =  escapeJavaScriptString(words[i]) + " ";
             String script = String.format(
                     "setTimeout(function() { " +
                             "var para = document.querySelector('.output-paragraph'); " +
@@ -129,5 +143,18 @@ public class MainView extends VerticalLayout {
         }
     }
 
+    public static String escapeJavaScriptString(String str) {
+        if (str == null) {
+            return null;
+        }
+        return str.replace("\\", "\\\\")
+                .replace("\"", "\\\"")
+                .replace("'", "\\\'")
+                .replace("\n", "\\n")
+                .replace("\r", "\\r")
+                .replace("\t", "\\t")
+                .replace("<", "\\u003C")
+                .replace(">", "\\u003E");
+    }
 
 }

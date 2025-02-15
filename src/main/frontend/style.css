@@ -32,19 +32,17 @@ body {
 }
 
 .output-paragraph {
-    display: inline-block; /* Allow the label to resize based on content */
-    width: 70%; /* Fixed width */
+    display: block; /* Allow dynamic resizing */
+    width: auto; /* Adjust width dynamically */
+    max-width: 70%; /* Ensures it doesn't get too wide */
     border-radius: 20px; /* Rounded corners */
-    min-height: 300px;
-    max-height: 500px;
     font-size: 25px;
     background-color: #d3d3d3; /* Background color */
     color: #000000; /* Text color */
     padding: 10px;
     border: 1px solid #ccc; /* Optional border */
-    overflow-y: auto; /* Scroll if content overflows vertically */
-    word-wrap: break-word; /* Break long words to fit within the label */
-    max-width: 100%; /* Ensure the label does not exceed the container width */
+    overflow-wrap: break-word; /* Ensure long words break */
+    word-break: break-word; /* Prevent overflow */
 }
 
 .date-pickers-layout {
