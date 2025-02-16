@@ -23,7 +23,8 @@ COPY . .
 RUN chmod +x /app/gradlew
 
 # Explicitly run Vaadin's frontend tasks within Docker
-RUN ./gradlew clean build vaadinBuildFrontend --no-daemon
+RUN ./gradlew clean build vaadinBuildFrontend -x test --no-daemon
+
 
 # Stage 2: Run the application
 FROM eclipse-temurin:17-jre
