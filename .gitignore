@@ -36,3 +36,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# Exclude .env file
+.env
+src/main/java/com/example/stockanalyzer/DotenvConf.java
