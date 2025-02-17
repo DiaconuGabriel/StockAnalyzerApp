@@ -4,6 +4,8 @@ StockAnalyzerApp is a web application for stock market analysis and predictions,
 
 ![Screenshot 2025-02-16 155138](https://github.com/user-attachments/assets/7aaa6570-0270-4a58-adc5-400ef8c6d189)
 
+Usually if there is no activity on the site render.com closes the app and when you enter the link you need to wait around 2-3 minutes for it to start maybe more.
+
 You can check it out on: https://stock-analyzer-app.onrender.com
 
 Features:
